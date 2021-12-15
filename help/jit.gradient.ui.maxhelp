@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 149.0, 130.0, 1293.0, 849.0 ],
+		"rect" : [ 149.0, 130.0, 1362.0, 849.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -249,7 +249,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1034.336146533489227, 75.515650689601898, 388.0, 282.0 ],
+					"patching_rect" : [ 955.336146533489227, 24.0, 388.0, 282.0 ],
 					"text" : "Cory\n\n 1 DONE - when you select an existing pointer and the color picker is already open, it would be nice if the color picker switched to show the selected color (right now it stays on the last setting) DONE\n\n2 - It would be great if there was some kind of weighting between points so you could create a curve between pointers\n\n3 - I find myself wanting to be able to modify the color value numbers directly in the UI. Not sure whether this would actually help me, but I’ve tried to do it more than a couple of times\n\n4- DONE // I also immediately want to automate the positions of the pointers using messages. (DONE)\n\n5 - DONE // one other thing is that if you move the leftmost pointer to the right and cross over an existing pointer, then use clear, it still uses that pointer as the “first” color. I think intuitively it feels like it should be the leftmost color as opposed to first. "
 				}
 
@@ -261,7 +261,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1180.229008197784424, 384.529093665594246, 215.0, 62.0 ],
+					"patching_rect" : [ 955.336146533489227, 314.0, 215.0, 62.0 ],
 					"text" : "- Shift delete (done)\n- get rid of key (done)\n- create color picker only when needed\n- add save and load system"
 				}
 
@@ -273,7 +273,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 961.5, 491.166666666666742, 176.0, 24.0 ],
+					"patching_rect" : [ 933.815788269042969, 496.166666666666742, 176.0, 24.0 ],
 					"text" : "Shift + click to delete pointer"
 				}
 
@@ -287,7 +287,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 448.815788269042969, 439.029093665594246, 510.684211730957031, 97.5 ]
+					"patching_rect" : [ 448.815788269042969, 444.166666666666742, 479.0, 95.0 ]
 				}
 
 			}
@@ -299,7 +299,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 235.0, 487.166666666666742, 206.0, 24.0 ],
+					"patching_rect" : [ 240.815788269042969, 496.166666666666742, 206.0, 24.0 ],
 					"text" : "Double click to create new pointer"
 				}
 
@@ -3636,15 +3636,15 @@
 , 			{
 				"box" : 				{
 					"hidden" : 1,
-					"id" : "obj-26",
+					"id" : "obj-1",
 					"ignoreclick" : 1,
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "list", "bang" ],
-					"patching_rect" : [ 448.0, 471.333333333333314, 100.0, 22.0 ],
+					"patching_rect" : [ 448.0, 475.666666666666686, 100.0, 22.0 ],
 					"text" : "colorpicker",
-					"varname" : "++picker++32695"
+					"varname" : "++picker++57926"
 				}
 
 			}

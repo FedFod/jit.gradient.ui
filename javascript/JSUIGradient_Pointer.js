@@ -108,6 +108,15 @@ function Pointer(x, color, ID)
 
 //---------------------------------------
 
+function RepositionPointers()
+{
+	for (var pointer in pointers)
+	{	
+		pointers[pointer].Reposition();
+	}
+}
+RepositionPointers.local = 1;
+
 function ReassignPointersID()
 {	
 	var nPointers = Object.keys(pointers).length;
@@ -117,6 +126,7 @@ function ReassignPointersID()
 		pointers[pointer].SetID(newID);
 	}
 }
+ReassignPointersID.local = 1;
 
 function CreateFirstPointers()
 {	
@@ -245,11 +255,6 @@ function GetSortedPointersIndices()
 		return a[1] - b[1];
 	});
 
-	// for (var item in sortable)
-	// {
-	// 	print(sortable[item])
-	// }
-	// print("++++++++++++++++++++")
 	return sortable;
 }
 GetSortedPointersIndices.local = 1;

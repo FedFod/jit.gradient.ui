@@ -8,6 +8,8 @@ mgraphics.init();
 mgraphics.relative_coords = 0;
 mgraphics.autofill = 0;
 
+box.rect = [box.rect[0], box.rect[1],box.rect[0]+480, box.rect[1]+85];
+
 var JSUISize = [box.rect[2] - box.rect[0], box.rect[3] - box.rect[1]];
 var gGradientSize = null;
 var gPointersSize = null;
