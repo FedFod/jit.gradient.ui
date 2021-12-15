@@ -48,12 +48,13 @@ function Pointer(x, color, ID)
 	this.Draw = function(mg)
 	{
 		mg.set_source_rgba(this.pointerColor);
-		mg.rectangle(this.pos[0],this.pos[1], gPointersSize[0], gPointersSize[1]);
+		var xPos = Math.min(this.pos[0], JSUISize[0]-gPointersSize[0]);
+		mg.rectangle(xPos,this.pos[1], gPointersSize[0], gPointersSize[1]);
 		mg.fill();
 		if (gPointerSelected == this.ID)
 		{
 			mg.set_source_rgba(this.selectionColor);
-			mg.rectangle(this.pos[0],this.pos[1], gPointersSize[0], gPointersSize[1]);
+			mg.rectangle(xPos,this.pos[1], gPointersSize[0], gPointersSize[1]);
 			mg.stroke();
 		}
 		this.DrawPercentageText(mg);
@@ -98,9 +99,24 @@ function Pointer(x, color, ID)
 	{
 		return this.ID;
 	}
+
+	this.SetID = function(id)
+	{
+		this.ID = id;
+	}
 }
 
 //---------------------------------------
+
+function ReassignPointersID()
+{	
+	var nPointers = Object.keys(pointers).length;
+	for (var pointer in pointers)
+	{
+		var newID = Math.floor(pointers[pointer].GetPercentage() * nPointers);
+		pointers[pointer].SetID(newID);
+	}
+}
 
 function CreateFirstPointers()
 {	
@@ -109,6 +125,7 @@ function CreateFirstPointers()
 	var newID = ++gPointersID;
     pointers[newID] = (new Pointer(JSUISize[0]-gPointersSize[0], [0,1,0,1], newID));
 }
+CreateFirstPointers.local = 1;
 
 function AddPointer(x)
 {	
@@ -116,7 +133,7 @@ function AddPointer(x)
 	gPointerSelected = newID;
 	pointers[newID] = (new Pointer(x, red, newID));
 	pointers[newID].SetPointerColor();
-	picker.SetColor(pointers[gPointerSelected].GetColor());
+	picker.SetColor(pointers[newID].GetColor());
 	DrawAll();
 	print("added pointer")
 }
@@ -157,11 +174,12 @@ function CheckIfPointersExist()
 }
 CheckIfPointersExist.local = 1;
 
-function MovePointer()
+function MovePointer(posX)
 {		
 	if (CheckIfPointersExist() && (gPointerSelected!=-1) && !picker.isSelected)
 	{
-		pointers[gPointerSelected].Move(mousePos[0]);
+		pointers[gPointerSelected].Move(posX);
+		// ReassignPointersID();
 	}
 }
 MovePointer.local = 1;
@@ -171,6 +189,7 @@ function DeselectPointer()
 	gPointerSelected = -1;
 	DrawAll();
 }
+DeselectPointer.local = 1;
 
 function DeleteSelectedPointer()
 {	
@@ -184,29 +203,53 @@ function DeleteSelectedPointer()
 }
 DeleteSelectedPointer.local = 1;
 
+function SelectPointer(index)
+{
+	gPointerSelected = index;
+}
+SelectPointer.local = 1;
+
 function GetSmallestPercentagePointer()
 {	
-	var perc = 2.0;
-	var smallestPercID = -1;
-	for (var pointer in pointers)
-	{	
-		var pointerPerc = pointers[pointer].GetPercentage();
-		if (pointerPerc < perc)
-		{
-			smallestPercID = pointers[pointer].GetID();
-			perc = pointerPerc;
+	if (Object.keys(pointers).length > 0)
+	{
+		var perc = 2.0;
+		var smallestPercID = -1;
+		for (var pointer in pointers)
+		{	
+			var pointerPerc = pointers[pointer].GetPercentage();
+			if (pointerPerc < perc)
+			{
+				smallestPercID = pointers[pointer].GetID();
+				perc = pointerPerc;
+			}
 		}
+		return smallestPercID;
+	} 
+	else 
+	{
+		return -1;
 	}
-	return smallestPercID;
 }
 GetSmallestPercentagePointer.local = 1;
 
-function RepositionPointers()
-{
+function GetSortedPointersIndices()
+{	
+	var sortable = [];
 	for (var pointer in pointers)
 	{	
-		pointers[pointer].Reposition();
+		sortable.push([pointer, pointers[pointer].GetPercentage()]);
 	}
-}
-RepositionPointers.local = 1;
 
+	sortable.sort(function(a, b) {
+		return a[1] - b[1];
+	});
+
+	// for (var item in sortable)
+	// {
+	// 	print(sortable[item])
+	// }
+	// print("++++++++++++++++++++")
+	return sortable;
+}
+GetSortedPointersIndices.local = 1;

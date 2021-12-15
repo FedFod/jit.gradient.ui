@@ -37,6 +37,8 @@ function Picker()
     this.SetColor = function(color)
     {   
         this.pickerColor = color.slice();
+        this.maxObj.message("currentcolor", color.slice());
+        // print("color "+color.slice())
     }
 
     this.SetColorToPointer = function()
@@ -173,6 +175,11 @@ function Picker()
         return this.isSelected;
     }
 
+    this.DeselectPicker = function()
+    {
+        this.isSelected = false;
+    }
+
     this.DestroyPickerMaxObj = function()
     {
         p.remove(this.maxObj);
@@ -182,9 +189,12 @@ function Picker()
 //-------------------------
 
 function PickerCallback(data)
-{
-    var pickedColor = picker.GetColor();
-    picker.SetColor(pickedColor);
-    picker.SetColorToPointer();
+{   
+    if (picker.isSelected)
+    {
+        var pickedColor = picker.GetColor();
+        picker.SetColor(pickedColor);
+        picker.SetColorToPointer();
+    }
 }
 

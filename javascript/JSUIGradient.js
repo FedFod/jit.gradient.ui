@@ -11,6 +11,9 @@ mgraphics.autofill = 0;
 var JSUISize = [box.rect[2] - box.rect[0], box.rect[3] - box.rect[1]];
 var gGradientSize = null;
 var gPointersSize = null;
+var gPreviousMovePointerPerc = -1;
+var gPreviousMovePointerIndex = -1;
+var gSortedIndices = [];
 SetSizes();
 
 var mgOutput = new MGraphics(JSUISize[0], JSUISize[1]);
@@ -46,15 +49,52 @@ function bang()
 	OutputGradMatrix();
 }
 
-function clear()
+function move_pointer(index, percentage)
 {
-	for (var pointer in pointers)
+	if ((index < Object.keys(pointers).length) && index >= 0 && (gPreviousMovePointerPerc != percentage))
+	{	
+		if (gPreviousMovePointerIndex != index)
+		{
+			gSortedIndices = GetSortedPointersIndices();
+			gPreviousMovePointerIndex = index;
+		}
+		picker.DeselectPicker();
+		SelectPointer(gSortedIndices[index][0]);
+		picker.SetColor(pointers[gPointerSelected].GetColor());
+		var newPos = percentage * JSUISize[0];
+		MovePointer(newPos);
+		DrawAll();
+		gPreviousMovePointerPerc = percentage;
+	}
+}
+
+function pointer_color(index, r, g, b, a)
+{
+	var sortedIndices = GetSortedPointersIndices();
+	picker.DeselectPicker();
+	SelectPointer(sortedIndices[index][0]);
+	var color = [r,g,b, 1];
+	if (a)
 	{
-		if (pointer>0)
+		color[3] = a;
+	}
+	pointers[gPointerSelected].SetColor(color);
+	picker.SetColor(color);
+	DrawAll();
+}
+
+function clear()
+{	
+	var index = GetSmallestPercentagePointer();
+
+	for (var pointer in pointers)
+	{	
+		if (pointers[pointer].GetID() != index)
 		{
 			delete pointers[pointer];
 		}
 	}
+	
 	gPointerSelected = -1;
 	gc();
 	DrawAll();
@@ -173,7 +213,7 @@ onresize.local = 1;
 function ondrag(x,y) // must be called "ondrag"
 {	
 	SetMousePos(x, y);
-	MovePointer();	
+	MovePointer(mousePos[0]);	
 	DrawAll();
 }
 ondrag.local = 1; 
@@ -240,6 +280,7 @@ function DrawBackground()
 	mgOutput.rectangle(0,gGradientSize[1]+gPointersSize[1], gGradientSize[0], JSUISize[1]-gGradientSize[1]+gPointersSize[1]);
 	mgOutput.fill();
 }
+DrawBackground.local = 1;
 
 function OutputGradMatrix()
 {	
@@ -276,7 +317,24 @@ function print() {
 }
 print.local = 1;
 
+function setvalueof(dict)
+{
+	var percentages = dict.get("pointers_percentages");
+	print(percentages);
+}
 
+function getvalueof()
+{	
+	print("get value of")
+	var saveDict = new Dict();
+	var percentages = [];
+	for (var pointer in pointers)
+	{
+		percentages.push(pointers[pointer].GetPercentage());
+	}
+	saveDict.replace("pointers_percentages", percentages);
+	return saveDict;
+}
 
 
 
