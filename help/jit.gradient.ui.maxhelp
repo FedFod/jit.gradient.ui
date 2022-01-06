@@ -245,12 +245,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-9",
-					"linecount" : 20,
+					"linecount" : 22,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 955.336146533489227, 24.0, 388.0, 282.0 ],
-					"text" : "Cory\n\n 1 DONE - when you select an existing pointer and the color picker is already open, it would be nice if the color picker switched to show the selected color (right now it stays on the last setting) DONE\n\n2 - It would be great if there was some kind of weighting between points so you could create a curve between pointers\n\n3 - I find myself wanting to be able to modify the color value numbers directly in the UI. Not sure whether this would actually help me, but I’ve tried to do it more than a couple of times\n\n4- DONE // I also immediately want to automate the positions of the pointers using messages. (DONE)\n\n5 - DONE // one other thing is that if you move the leftmost pointer to the right and cross over an existing pointer, then use clear, it still uses that pointer as the “first” color. I think intuitively it feels like it should be the leftmost color as opposed to first. "
+					"patching_rect" : [ 955.336146533489227, 24.0, 388.0, 310.0 ],
+					"text" : "Cory\n\n 1 DONE - when you select an existing pointer and the color picker is already open, it would be nice if the color picker switched to show the selected color (right now it stays on the last setting) DONE\n\n4- DONE // I also immediately want to automate the positions of the pointers using messages. (DONE)\n\n5 - DONE // one other thing is that if you move the leftmost pointer to the right and cross over an existing pointer, then use clear, it still uses that pointer as the “first” color. I think intuitively it feels like it should be the leftmost color as opposed to first. \n\nTODO:\n\n2 - It would be great if there was some kind of weighting between points so you could create a curve between pointers\n\n3 - I find myself wanting to be able to modify the color value numbers directly in the UI. Not sure whether this would actually help me, but I’ve tried to do it more than a couple of times"
 				}
 
 			}
@@ -261,7 +261,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 955.336146533489227, 314.0, 215.0, 62.0 ],
+					"patching_rect" : [ 955.336146533489227, 344.515650689601898, 215.0, 62.0 ],
 					"text" : "- Shift delete (done)\n- get rid of key (done)\n- create color picker only when needed\n- add save and load system"
 				}
 
@@ -287,7 +287,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 448.815788269042969, 444.166666666666742, 479.0, 95.0 ]
+					"patching_rect" : [ 448.0, 444.0, 480.0, 85.0 ]
 				}
 
 			}
@@ -312,7 +312,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 618.0, 392.029093665594246, 367.0, 39.0 ],
+					"patching_rect" : [ 581.0, 400.029093665594246, 367.0, 39.0 ],
 					"text" : "Can create the object by typing \"jit.gradient.ui\" in an empty max obj"
 				}
 
@@ -3642,9 +3642,9 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "list", "bang" ],
-					"patching_rect" : [ 448.0, 475.666666666666686, 100.0, 22.0 ],
+					"patching_rect" : [ 448.0, 472.333333333333314, 100.0, 22.0 ],
 					"text" : "colorpicker",
-					"varname" : "++picker++57926"
+					"varname" : "++picker++15296"
 				}
 
 			}
@@ -3798,7 +3798,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-35", 0 ],
-					"midpoints" : [ 676.315788269042969, 363.0, 458.315788269042969, 363.0 ],
+					"midpoints" : [ 676.315788269042969, 363.0, 457.5, 363.0 ],
 					"source" : [ "obj-45", 0 ]
 				}
 
