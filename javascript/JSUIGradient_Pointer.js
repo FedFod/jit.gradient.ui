@@ -29,7 +29,8 @@ function Pointer(x, color, ID)
 
 	this.SetPointerColor = function()
 	{
-		this.pointerColor = this.color;
+		this.pointerColor = this.color.slice();
+		this.pointerColor[3] = 1;
 	}
 
 	this.CheckIfSelected = function(x)

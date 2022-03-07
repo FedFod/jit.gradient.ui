@@ -30,7 +30,6 @@ var gBgColor = [0.6, 0.6, 0.6, 1];
 var gPointerBackgroundColor =  [0.9,0.9,0.9,1];
 var isInit = false;
 
-var colors = [];
 var pointers = {};
 var gPointerSelected = -1;
 var gPointersID = 0;
@@ -42,6 +41,8 @@ oneDimOutMatrix.adapt = 0;
 
 var p = this.patcher; 
 var picker = new Picker();
+
+var g_bgImage = new Image("imageBG.png");
 
 // PUBLIC FUNCTIONS ----------------------
 
@@ -75,7 +76,7 @@ function pointer_color(index, r, g, b, a)
 	var sortedIndices = GetSortedPointersIndices();
 	picker.DeselectPicker();
 	SelectPointer(sortedIndices[index][0]);
-	var color = [r,g,b, 1];
+	var color = [r,g,b,a];
 	if (a)
 	{
 		color[3] = a;
@@ -163,7 +164,8 @@ SetSizes.local = 1;
 
 function paint() {
 	if (mgraphics && displayImage)
-	{	
+	{
+		// mgraphics.image_surface_draw(g_bgImage);
 		mgraphics.image_surface_draw(displayImage);	
 	}
 	if (!isInit)
@@ -220,15 +222,6 @@ function ondrag(x,y) // must be called "ondrag"
 }
 ondrag.local = 1; 
 
-function DrawAll()
-{	
-	DrawBackground();
-	picker.DrawPicker();
-	DrawGradient();
-	DrawPointers();
-	DrawToDisplayImage();
-}
-DrawAll.local = 1;
 
 function SetMousePos(x, y)
 {
@@ -254,13 +247,26 @@ function ClearBackground()
 }
 ClearBackground.local = 1;
 
+function DrawAll()
+{	
+	DrawBackground();
+	picker.DrawPicker();
+	DrawGradient();
+	DrawPointers();
+	DrawToDisplayImage();
+}
+DrawAll.local = 1;
+
 function DrawGradient()
 {	
 	mgOutput.rectangle(0,0,gGradientSize[0], gGradientSize[1]);
+	// mgOutput.image_surface_draw(g_bgImage);
 
 	var gradPattr = mgOutput.pattern_create_linear(0, gGradientSize[1], gGradientSize[0], gGradientSize[1]);
 
 	var smallestPercPointerID = GetSmallestPercentagePointer();
+
+	// this must be done to avoid glitch on first pointer color
 	gradPattr.add_color_stop_rgba(0., pointers[smallestPercPointerID].GetColor());
 
 	for (var pointer in pointers) {
@@ -281,6 +287,7 @@ function DrawBackground()
 	mgOutput.set_source_rgba(gBgColor);
 	mgOutput.rectangle(0,gGradientSize[1]+gPointersSize[1], gGradientSize[0], JSUISize[1]-gGradientSize[1]+gPointersSize[1]);
 	mgOutput.fill();
+	mgOutput.image_surface_draw(g_bgImage);
 }
 DrawBackground.local = 1;
 
