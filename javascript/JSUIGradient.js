@@ -19,6 +19,9 @@ var gSortedIndices = [];
 SetSizes();
 
 var mgOutput = new MGraphics(JSUISize[0], JSUISize[1]);
+var mgOutputGradient = new MGraphics(JSUISize[0], 1);
+mgOutputGradient.relative_coords = 0;
+mgOutputGradient.autofill = 0;
 
 var outImage = null;
 var displayImage = null;
@@ -43,6 +46,10 @@ var p = this.patcher;
 var picker = new Picker();
 
 var g_bgImage = new Image("imageBG.png");
+// var g_bgImgMatrix = new JitterMatrix();
+// g_bgImgMatrix.importmovie("imageBG.png");
+
+// var g_jit_alphablend = new JitterObject("jit.alphablend");
 
 // PUBLIC FUNCTIONS ----------------------
 
@@ -111,7 +118,7 @@ function alpha_last(val)
 	} 
 	else 
 	{
-		oneDimOutMatrix.planemap = [0,1, 2, 3];
+		oneDimOutMatrix.planemap = [0, 1, 2, 3];
 	}
 	OutputGradMatrix();
 }
@@ -161,24 +168,6 @@ function SetSizes()
 	gPointersSize = [JSUISize[0]/60, JSUISize[1]/6];
 }
 SetSizes.local = 1;
-
-function paint() {
-	if (mgraphics && displayImage)
-	{
-		// mgraphics.image_surface_draw(g_bgImage);
-		mgraphics.image_surface_draw(displayImage);	
-	}
-	if (!isInit)
-	{
-		Init();
-		isInit = true;
-	}
-	picker.SetMaxObjPosition();
-	picker.SendMaxObjToBack();
-	gc();
-	
-}
-paint.local = 1;
 
 function onclick(x,y, button)
 {	
@@ -236,14 +225,47 @@ function SetMousePos(x, y)
 }
 SetMousePos.local = 1;
 
+function OutputGradMatrix()
+{	
+	outImage = new Image(mgOutputGradient);
+	outImage.tonamedmatrix(outputMatrix.name);
+		
+	oneDimOutMatrix.frommatrix(outputMatrix.name);
+	outlet(0, "jit_matrix", oneDimOutMatrix.name);
+}
+OutputGradMatrix.local = 1;
+
+// DRAWING FUNCTIONS ------------
+function paint() {
+	if (mgraphics && displayImage)
+	{	
+		mgraphics.image_surface_draw(displayImage);	
+	}
+	if (!isInit)
+	{
+		Init();
+		isInit = true;
+	}
+	picker.SetMaxObjPosition();
+	picker.SendMaxObjToBack();
+	gc();
+	
+}
+paint.local = 1;
+
 function ClearBackground()
 {
 	mgOutput.set_source_rgba(gPointerBackgroundColor);
 	mgOutput.rectangle(0,gGradientSize[1], gGradientSize[0], gPointersSize[1]);
 	mgOutput.fill();
+	// Draw edge
 	mgOutput.set_source_rgba(black);
 	mgOutput.rectangle(0,gGradientSize[1], gGradientSize[0], gPointersSize[1]);
 	mgOutput.stroke();
+
+	mgOutputGradient.set_source_rgba([0,0,0,1]);
+	mgOutputGradient.rectangle(0, 1, gGradientSize[0], 1);
+	mgOutputGradient.fill();
 }
 ClearBackground.local = 1;
 
@@ -257,25 +279,48 @@ function DrawAll()
 }
 DrawAll.local = 1;
 
+function DrawTransparencyBG()
+{	
+	var currentWidth = 0;
+	while (currentWidth<JSUISize[0]+g_bgImage.size[0])
+	{	
+		mgOutput.translate(currentWidth,0);
+		mgOutput.image_surface_draw(g_bgImage);
+		currentWidth += g_bgImage.size[0];
+		mgOutput.identity_matrix();
+	}
+}
+
 function DrawGradient()
 {	
+	// mgOutput.set_source_rgba(gPointerBackgroundColor);
+
 	mgOutput.rectangle(0,0,gGradientSize[0], gGradientSize[1]);
-	// mgOutput.image_surface_draw(g_bgImage);
+	// mgOutputGradient.set_source_rgba(0.99,0,0.99,0.5);
+	mgOutputGradient.rectangle(0,0,gGradientSize[0], 1);
+	// mgOutputGradient.fill();
 
 	var gradPattr = mgOutput.pattern_create_linear(0, gGradientSize[1], gGradientSize[0], gGradientSize[1]);
+	var gradPattr2 = mgOutputGradient.pattern_create_linear(0, 1, gGradientSize[0], 1);
 
 	var smallestPercPointerID = GetSmallestPercentagePointer();
 
 	// this must be done to avoid glitch on first pointer color
 	gradPattr.add_color_stop_rgba(0., pointers[smallestPercPointerID].GetColor());
+	gradPattr2.add_color_stop_rgba(0., pointers[smallestPercPointerID].GetColor());
+	print(pointers[smallestPercPointerID].GetColor())
 
 	for (var pointer in pointers) {
 		var percentage = Math.max(pointers[pointer].GetPercentage(), 0.001);
 		gradPattr.add_color_stop_rgba(percentage, pointers[pointer].GetColor());
+		gradPattr2.add_color_stop_rgba(percentage, pointers[pointer].GetColor());
 	}
 	
 	mgOutput.set_source(gradPattr);
 	mgOutput.fill();
+
+	mgOutputGradient.set_source(gradPattr);
+	mgOutputGradient.fill();
 
 	OutputGradMatrix();
 	ClearBackground();
@@ -283,23 +328,13 @@ function DrawGradient()
 DrawGradient.local = 1;
 
 function DrawBackground()
-{
+{	
+	DrawTransparencyBG();
 	mgOutput.set_source_rgba(gBgColor);
 	mgOutput.rectangle(0,gGradientSize[1]+gPointersSize[1], gGradientSize[0], JSUISize[1]-gGradientSize[1]+gPointersSize[1]);
 	mgOutput.fill();
-	mgOutput.image_surface_draw(g_bgImage);
 }
 DrawBackground.local = 1;
-
-function OutputGradMatrix()
-{	
-	outImage = new Image(mgOutput);
-	outImage.tonamedmatrix(outputMatrix.name);
-		
-	oneDimOutMatrix.frommatrix(outputMatrix.name);
-	outlet(0, "jit_matrix", oneDimOutMatrix.name);
-}
-OutputGradMatrix.local = 1;
 
 function DrawToDisplayImage()
 {	
@@ -308,10 +343,17 @@ function DrawToDisplayImage()
 }
 DrawToDisplayImage.local = 1;
 
+//----------------------------------------------
+// FREE MEMORY
 function notifydeleted()
 {	
 	outputMatrix.freepeer();
 	oneDimOutMatrix.freepeer();
+	// g_bgImgMatrix.freepeer();
+	// g_jit_alphablend.freepeer();
+	mgOutput.freepeer();
+	mgraphics.freepeer();
+	mgOutputGradient.freepeer();
 	picker.DestroyPickerMaxObj();
 	p.write();
 	gc();
@@ -326,24 +368,25 @@ function print() {
 }
 print.local = 1;
 
-function setvalueof(dict)
-{
-	var percentages = dict.get("pointers_percentages");
-	print(percentages);
-}
+// SAVE / LOAD
+// function setvalueof(dict)
+// {
+// 	var percentages = dict.get("pointers_percentages");
+// 	print(percentages);
+// }
 
-function getvalueof()
-{	
-	print("get value of")
-	var saveDict = new Dict();
-	var percentages = [];
-	for (var pointer in pointers)
-	{
-		percentages.push(pointers[pointer].GetPercentage());
-	}
-	saveDict.replace("pointers_percentages", percentages);
-	return saveDict;
-}
+// function getvalueof()
+// {	
+// 	print("get value of")
+// 	var saveDict = new Dict();
+// 	var percentages = [];
+// 	for (var pointer in pointers)
+// 	{
+// 		percentages.push(pointers[pointer].GetPercentage());
+// 	}
+// 	saveDict.replace("pointers_percentages", percentages);
+// 	return saveDict;
+// }
 
 
 

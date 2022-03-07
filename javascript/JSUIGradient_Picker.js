@@ -58,7 +58,7 @@ function Picker()
     this.CreatePickerMaxObj = function()
     {   
 
-        // this.maxObj = p.getnamed("++picker++");
+        this.maxObj = p.getnamed("++picker++");
         // print("picker exists "+this.PickerExists())
         
         // if (this.PickerExists())
@@ -66,15 +66,17 @@ function Picker()
         //     p.remove(this.maxObj);
         //     print("REMOVED OLD PICKER")
         // }
-        
-        this.maxObj = p.newdefault(box.rect[0], box.rect[1]+JSUISize[1]/3, "colorpicker");
+        if (this.maxObj == null)
+        {
+            this.maxObj = p.newdefault(box.rect[0], box.rect[1]+JSUISize[1]/3, "colorpicker");
+        }
         print("Created Picker ++++++++++++++++++");
         
         if (this.maxObj)
         {
             this.maxObj.hidden = 1;
             this.maxObj.ignoreclick = 1;
-            this.maxObj.varname = "++picker++"+Math.floor(Math.random()*100000);
+            this.maxObj.varname = "++picker++";//+Math.floor(Math.random()*100000);
             this.maxObj.compatibility = 0;
             this.pickerListener = new MaxobjListener(this.maxObj, "currentcolor", PickerCallback);
             this.SetMaxObjPosition();
