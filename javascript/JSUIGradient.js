@@ -45,11 +45,7 @@ oneDimOutMatrix.adapt = 0;
 var p = this.patcher; 
 var picker = new Picker();
 
-var g_bgImage = new Image("imageBG.png");
-// var g_bgImgMatrix = new JitterMatrix();
-// g_bgImgMatrix.importmovie("imageBG.png");
-
-// var g_jit_alphablend = new JitterObject("jit.alphablend");
+var g_bgImage = new Image("imageBG.jpg");
 
 // PUBLIC FUNCTIONS ----------------------
 
@@ -290,36 +286,44 @@ function DrawTransparencyBG()
 		mgOutput.identity_matrix();
 	}
 }
+DrawTransparencyBG.local = 1;
 
 function DrawGradient()
 {	
-	// mgOutput.set_source_rgba(gPointerBackgroundColor);
+	// Set gradient background color 
+	mgOutput.set_source_rgba(gPointerBackgroundColor);
+	// Create rectangle for alpha part
+	mgOutput.rectangle(0,0,gGradientSize[0], (gGradientSize[1]/3));
 
-	mgOutput.rectangle(0,0,gGradientSize[0], gGradientSize[1]);
-	// mgOutputGradient.set_source_rgba(0.99,0,0.99,0.5);
+	// Create rect for output gradient, only 1 pixel height
 	mgOutputGradient.rectangle(0,0,gGradientSize[0], 1);
-	// mgOutputGradient.fill();
 
-	var gradPattr = mgOutput.pattern_create_linear(0, gGradientSize[1], gGradientSize[0], gGradientSize[1]);
-	var gradPattr2 = mgOutputGradient.pattern_create_linear(0, 1, gGradientSize[0], 1);
+	var gradPattr = mgOutput.pattern_create_linear(0, 10, gGradientSize[0], 10);
+	var gradPattrNoAlpha = mgOutputGradient.pattern_create_linear(0, 1, gGradientSize[0], 1);
 
 	var smallestPercPointerID = GetSmallestPercentagePointer();
 
 	// this must be done to avoid glitch on first pointer color
 	gradPattr.add_color_stop_rgba(0., pointers[smallestPercPointerID].GetColor());
-	gradPattr2.add_color_stop_rgba(0., pointers[smallestPercPointerID].GetColor());
-	print(pointers[smallestPercPointerID].GetColor())
+	gradPattrNoAlpha.add_color_stop_rgba(0., pointers[smallestPercPointerID].GetColorNoAlpha());
 
 	for (var pointer in pointers) {
 		var percentage = Math.max(pointers[pointer].GetPercentage(), 0.001);
 		gradPattr.add_color_stop_rgba(percentage, pointers[pointer].GetColor());
-		gradPattr2.add_color_stop_rgba(percentage, pointers[pointer].GetColor());
+		gradPattrNoAlpha.add_color_stop_rgba(percentage, pointers[pointer].GetColorNoAlpha());
 	}
 	
+	// rectangle for alpha gradient
 	mgOutput.set_source(gradPattr);
 	mgOutput.fill();
 
-	mgOutputGradient.set_source(gradPattr);
+	// rectangle for no alpha gradient
+	mgOutput.rectangle(0,gGradientSize[1]/3-2,gGradientSize[0], (gGradientSize[1]/3)*2+2);
+	mgOutput.set_source(gradPattrNoAlpha);
+	mgOutput.fill();
+
+	// rectangle below for no alpha gradient
+	mgOutputGradient.set_source(gradPattrNoAlpha);
 	mgOutputGradient.fill();
 
 	OutputGradMatrix();

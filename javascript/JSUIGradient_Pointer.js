@@ -79,8 +79,14 @@ function Pointer(x, color, ID)
 
     this.GetColor = function()
     {
-        return this.color;
+        // return [this.color[0], this.color[1], this.color[2], 1];
+		return this.color;
     }
+
+	this.GetColorNoAlpha = function()
+	{
+		return [this.color[0], this.color[1], this.color[2], 1];
+	}
 	
 	this.SetColor = function(color)
 	{	

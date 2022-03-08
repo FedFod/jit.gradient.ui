@@ -37,6 +37,8 @@ function Picker()
     this.SetColor = function(color)
     {   
         this.pickerColor = color.slice();
+        // var tempColor = color.slice();
+        // tempColor[3] = 1;
         this.maxObj.message("currentcolor", color.slice());
         // print("color "+color.slice())
     }
@@ -57,15 +59,8 @@ function Picker()
 
     this.CreatePickerMaxObj = function()
     {   
-
         this.maxObj = p.getnamed("++picker++");
-        // print("picker exists "+this.PickerExists())
         
-        // if (this.PickerExists())
-        // {
-        //     p.remove(this.maxObj);
-        //     print("REMOVED OLD PICKER")
-        // }
         if (this.maxObj == null)
         {
             this.maxObj = p.newdefault(box.rect[0], box.rect[1]+JSUISize[1]/3, "colorpicker");
@@ -125,7 +120,9 @@ function Picker()
         mgOutput.set_source_rgba(gBgColor);
         if (gPointerSelected != -1)
 	    {	
-            mgOutput.set_source_rgba(this.pickerColor);
+            var tempColor = this.pickerColor.slice();
+            tempColor[3] = 1;
+            mgOutput.set_source_rgba(tempColor);
         } 
         mgOutput.rectangle(this.pickerPos[0], this.pickerPos[1], this.pickerSize[0], this.pickerSize[1]);
         mgOutput.fill();
