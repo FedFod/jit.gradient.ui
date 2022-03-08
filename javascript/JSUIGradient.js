@@ -2,7 +2,7 @@ autowatch = 1;
 outlets = 1;
 include("JSUIGradient_Pointer.js");
 include("JSUIGradient_Picker.js");
-
+include("JSUIGradient_Save_Load.js");
 
 mgraphics.init();
 mgraphics.relative_coords = 0;

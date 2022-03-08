@@ -40,6 +40,18 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-70",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 930.508431315422058, 418.64404833316803, 34.0, 22.0 ],
+					"text" : "write"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-59",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -153,7 +165,11 @@
 					"patching_rect" : [ 607.0, 181.837606906890869, 100.0, 40.0 ],
 					"preset_data" : [ 						{
 							"number" : 1,
-							"data" : [ 5, "obj-25", "toggle", "int", 0, 5, "obj-49", "number", "int", 15, 5, "obj-60", "toggle", "int", 0, 5, "obj-31", "toggle", "int", 0, 5, "obj-44", "number", "int", 0, 5, "obj-46", "flonum", "float", 0.0, 5, "obj-42", "number", "int", 0, 5, "obj-39", "flonum", "float", 1.0, 5, "obj-47", "flonum", "float", 0.0, 5, "obj-48", "flonum", "float", 0.0, 5, "obj-7", "flonum", "float", 0.237000003457069 ]
+							"data" : [ 5, "obj-25", "toggle", "int", 1, 5, "obj-49", "number", "int", 200, 5, "obj-60", "toggle", "int", 1, 5, "obj-31", "toggle", "int", 1, 5, "obj-44", "number", "int", 0, 5, "obj-46", "flonum", "float", 0.0, 5, "obj-42", "number", "int", 0, 5, "obj-39", "flonum", "float", 1.0, 5, "obj-47", "flonum", "float", 0.0, 5, "obj-48", "flonum", "float", 0.0, 5, "obj-7", "flonum", "float", 0.0 ]
+						}
+, 						{
+							"number" : 2,
+							"data" : [ 5, "obj-25", "toggle", "int", 1, 5, "obj-49", "number", "int", 200, 5, "obj-60", "toggle", "int", 1, 5, "obj-31", "toggle", "int", 1, 5, "obj-44", "number", "int", 0, 5, "obj-46", "flonum", "float", 0.0, 5, "obj-42", "number", "int", 0, 5, "obj-39", "flonum", "float", 1.0, 5, "obj-47", "flonum", "float", 0.0, 5, "obj-48", "flonum", "float", 0.0, 5, "obj-7", "flonum", "float", 0.0 ]
 						}
  ]
 				}
@@ -2469,8 +2485,50 @@
 				}
 
 			}
+, 			{
+				"box" : 				{
+					"filename" : "JSUIGradient.js",
+					"id" : "obj-35",
+					"maxclass" : "jsui",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 427.0, 439.0, 480.0, 85.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"hidden" : 1,
+					"id" : "obj-71",
+					"ignoreclick" : 1,
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "list", "bang" ],
+					"patching_rect" : [ 427.0, 467.333333333333314, 100.0, 22.0 ],
+					"text" : "colorpicker",
+					"varname" : "++picker++"
+				}
+
+			}
  ],
 		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-35", 0 ],
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-35", 0 ],
+					"source" : [ "obj-127", 0 ]
+				}
+
+			}
+, 			{
 				"patchline" : 				{
 					"destination" : [ "obj-56", 0 ],
 					"source" : [ "obj-16", 0 ]
@@ -2553,8 +2611,39 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"order" : 1,
+					"source" : [ "obj-35", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-469", 0 ],
+					"order" : 0,
+					"source" : [ "obj-35", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-56", 1 ],
+					"order" : 2,
+					"source" : [ "obj-35", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-54", 0 ],
 					"source" : [ "obj-39", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-35", 0 ],
+					"source" : [ "obj-40", 0 ]
 				}
 
 			}
@@ -2567,8 +2656,23 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-35", 0 ],
+					"source" : [ "obj-43", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-40", 1 ],
 					"source" : [ "obj-44", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-35", 0 ],
+					"midpoints" : [ 676.315788269042969, 381.273359000682831, 436.5, 381.273359000682831 ],
+					"source" : [ "obj-45", 0 ]
 				}
 
 			}
@@ -2701,8 +2805,29 @@
 				}
 
 			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-35", 0 ],
+					"source" : [ "obj-70", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-35", 0 ],
+					"source" : [ "obj-97", 0 ]
+				}
+
+			}
  ],
 		"dependency_cache" : [ 			{
+				"name" : "JSUIGradient.js",
+				"bootpath" : "~/Documents/Max 8/Packages/jit.gradient.ui/javascript",
+				"patcherrelativepath" : "../javascript",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "jit.mo.time.mxe64",
 				"type" : "mx64"
 			}
