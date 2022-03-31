@@ -19,7 +19,7 @@ function Picker()
         } 
         else 
         {   
-            print("NO COLOR")
+            FF_Utils.Print("NO COLOR")
             return -1;
         }
     }
@@ -65,7 +65,7 @@ function Picker()
         {
             this.maxObj = p.newdefault(box.rect[0], box.rect[1]+JSUISize[1]/3, "colorpicker");
         }
-        print("Created Picker ++++++++++++++++++");
+        // print("Created Picker ++++++++++++++++++");
         
         if (this.maxObj)
         {
@@ -96,7 +96,7 @@ function Picker()
         if (pickerObj.rect[0] >= box.rect[0] && pickerObj.rect[2] <= box.rect[2] &&
             pickerObj.rect[1] >= box.rect[1] && pickerObj.rect[3] <= box.rect[3])
         {   
-            print("isINSIDE")
+            // print("isINSIDE")
             return 1;
         }
         else 

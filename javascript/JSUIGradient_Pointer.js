@@ -116,7 +116,8 @@ function Pointer(x, color, ID)
 //---------------------------------------
 
 function RepositionPointers()
-{
+{	
+	if (pointers)
 	for (var pointer in pointers)
 	{	
 		pointers[pointer].Reposition();
@@ -152,7 +153,7 @@ function AddPointer(x)
 	pointers[newID].SetPointerColor();
 	picker.SetColor(pointers[newID].GetColor());
 	DrawAll();
-	print("added pointer")
+	// print("added pointer")
 }
 AddPointer.local = 1;
 

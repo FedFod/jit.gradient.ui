@@ -37,9 +37,9 @@ var pointers = {};
 var gPointerSelected = -1;
 var gPointersID = 0;
 
-var outputMatrix = new JitterMatrix(4, "float32", [200, 1]);
+var outputMatrix = new JitterMatrix(4, "float32", [20, 1]);
 outputMatrix.adapt = 0;
-var oneDimOutMatrix = new JitterMatrix(4, "float32", [200, 1]);
+var oneDimOutMatrix = new JitterMatrix(4, "float32", [20, 1]);
 oneDimOutMatrix.adapt = 0;
 
 var p = this.patcher; 
@@ -153,7 +153,7 @@ function RemoveOldPickersIter(b)
 		if ((isCalledPicker && pickerIsInside))
 		{
 			p.remove(b);
-			print("----------------removed")
+			// print("----------------removed")
 		}
 	}
 }
@@ -190,12 +190,16 @@ function onresize(width, height)
 	JSUISize = [width, height]; 
 	SetSizes();
 	RepositionPointers();
-	picker.SetPickerSize();
-	picker.SetPickerPosition();
-	picker.SetMaxObjPosition();
-	picker.MovePicker();
 	mgOutput = new MGraphics(width, height);
-	DrawAll();
+
+	if (picker)
+	{	
+		picker.SetPickerSize();
+		picker.SetPickerPosition();
+		picker.SetMaxObjPosition();
+		picker.MovePicker();
+		DrawAll();
+	}
 }
 onresize.local = 1;
 
@@ -222,7 +226,7 @@ function SetMousePos(x, y)
 SetMousePos.local = 1;
 
 function OutputGradMatrix()
-{	
+{		
 	outImage = new Image(mgOutputGradient);
 	outImage.tonamedmatrix(outputMatrix.name);
 		
@@ -251,6 +255,7 @@ paint.local = 1;
 
 function ClearBackground()
 {
+	// mgOutput.clear_surface();
 	mgOutput.set_source_rgba(gPointerBackgroundColor);
 	mgOutput.rectangle(0,gGradientSize[1], gGradientSize[0], gPointersSize[1]);
 	mgOutput.fill();
@@ -268,7 +273,10 @@ ClearBackground.local = 1;
 function DrawAll()
 {	
 	DrawBackground();
-	picker.DrawPicker();
+	if (picker)
+	{
+		picker.DrawPicker();
+	}
 	DrawGradient();
 	DrawPointers();
 	DrawToDisplayImage();
@@ -296,6 +304,7 @@ function DrawGradient()
 	mgOutput.rectangle(0,0,gGradientSize[0], (gGradientSize[1]/3));
 
 	// Create rect for output gradient, only 1 pixel height
+	mgOutputGradient.clear_surface();
 	mgOutputGradient.rectangle(0,0,gGradientSize[0], 1);
 
 	var gradPattr = mgOutput.pattern_create_linear(0, 10, gGradientSize[0], 10);
@@ -323,7 +332,7 @@ function DrawGradient()
 	mgOutput.fill();
 
 	// rectangle below for no alpha gradient
-	mgOutputGradient.set_source(gradPattrNoAlpha);
+	mgOutputGradient.set_source(gradPattr);
 	mgOutputGradient.fill();
 
 	OutputGradMatrix();
@@ -333,6 +342,7 @@ DrawGradient.local = 1;
 
 function DrawBackground()
 {	
+	mgOutput.clear_surface();
 	DrawTransparencyBG();
 	mgOutput.set_source_rgba(gBgColor);
 	mgOutput.rectangle(0,gGradientSize[1]+gPointersSize[1], gGradientSize[0], JSUISize[1]-gGradientSize[1]+gPointersSize[1]);

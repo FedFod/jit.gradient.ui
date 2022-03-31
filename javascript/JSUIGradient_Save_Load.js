@@ -45,7 +45,7 @@ loadSaveDict.local = 1;
 
 function loadFromDict(saveDict) {
 	var percentages = saveDict.get("pointers_percentages");
-	print("Percentage: ")
+	// print("Percentage: ")
 	percentages.forEach(print);
 }
 loadFromDict.local = 1;
