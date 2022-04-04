@@ -6,6 +6,7 @@ function Pointer(x, color, ID)
     this.color = color.slice();
 	this.ID = ID;
 	this.percentageText = null;
+	this.mouseOffset = 0;
 
     this.percentage = x/JSUISize[0];
 
@@ -15,15 +16,20 @@ function Pointer(x, color, ID)
 		this.Move(newPos);
 	}
 
-    this.Move = function(x)
+	this.CalcMouseOffset = function(mouseX)
 	{
-		this.pos[0] = x;
+		this.mouseOffset = this.pos[0] - mouseX;
+	}
+
+    this.Move = function(x)
+	{	
+		this.pos[0] = x+this.mouseOffset;
         this.percentage = this.pos[0]/JSUISize[0];
 	}
 
 	this.UpdatePos = function()
 	{
-		this.pos[0] = this.pos[0];
+		//this.pos[0] = this.pos[0];
 		this.pos[1] = gGradientSize[1];
 	}
 
@@ -34,16 +40,15 @@ function Pointer(x, color, ID)
 	}
 
 	this.CheckIfSelected = function(x)
-	{
+	{	
+		tempRet = -1;
 		if (Math.abs(this.pos[0]-x) <= gPointersSize[0])
 		{	
 			this.SetPointerColor();
-			return this.ID;
+			tempRet = this.ID;
+			
 		} 
-		else 
-		{	
-			return -1;
-		}
+		return tempRet;
 	}
 
 	this.Draw = function(mg)
@@ -179,6 +184,7 @@ function CheckIfPointersSelected()
 			{	
 				gPointerSelected = tempIndex;
 				picker.SetColor(pointers[gPointerSelected].GetColor());
+				pointers[gPointerSelected].CalcMouseOffset(mousePos[0]);
 			}
 		}
 	}
@@ -195,7 +201,7 @@ CheckIfPointersExist.local = 1;
 function MovePointer(posX)
 {		
 	if (CheckIfPointersExist() && (gPointerSelected!=-1) && !picker.isSelected)
-	{
+	{	
 		pointers[gPointerSelected].Move(posX);
 		// ReassignPointersID();
 	}

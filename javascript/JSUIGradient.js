@@ -25,7 +25,7 @@ mgOutputGradient.autofill = 0;
 
 var outImage = null;
 var displayImage = null;
-var mousePos = [-100, -100];
+var mousePos = [-100, -100, 0];
 var black = [0,0,0,1];
 var white = [1,1,1,1];
 var red = [1,0,0,1];
