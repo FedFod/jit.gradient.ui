@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 77.0, 1484.0, 929.0 ],
+		"rect" : [ 324.0, 277.0, 1484.0, 635.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -48,7 +48,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 219.151282608509064, 355.235293865203914, 210.0, 24.0 ],
-					"presentation_linecount" : 2,
 					"text" : "Click the rectangle to change color"
 				}
 
@@ -1036,7 +1035,7 @@
 , 			{
 				"box" : 				{
 					"hidden" : 1,
-					"id" : "obj-20",
+					"id" : "obj-1",
 					"ignoreclick" : 1,
 					"maxclass" : "newobj",
 					"numinlets" : 1,

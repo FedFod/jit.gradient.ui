@@ -47,6 +47,28 @@ var picker = new Picker();
 
 var g_bgImage = new Image("imageBG.jpg");
 
+// RESIZE BPATCHER -----------------------
+
+var prev_size = [480,85];
+
+function resize_bpatcher(dim_x, dim_y)
+{
+    var patcher_rect = this.patcher.box.rect;
+    var size = [patcher_rect[2]-patcher_rect[0], patcher_rect[3]-patcher_rect[1]];
+    if (dim_x && dim_y) {
+        prev_size = [dim_x, dim_y];
+        this.patcher.box.rect = [patcher_rect[0], patcher_rect[1], patcher_rect[0]+dim_x, patcher_rect[1]+dim_y];
+    } else {
+        if (size[0] != prev_size[0] || size[1] != prev_size[1]) {
+            prev_size = size.slice();
+            this.patcher.box.rect = [patcher_rect[0], patcher_rect[1], patcher_rect[0]+size[0], patcher_rect[1]+size[1]];
+			box.rect = [box.rect[0], box.rect[1],box.rect[0]+size[0], box.rect[1]+size[1]];
+			onresize(size[0], size[1]);
+			DrawAll();
+        }
+    }
+}
+
 // PUBLIC FUNCTIONS ----------------------
 
 function bang()
